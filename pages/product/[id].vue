@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import type { Product } from '~/utils/productService'
+import type { Product } from '~/server/utils/productData'
 
 const route = useRoute()
 const cartStore = useCartStore()
 
 const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
-const product = ref<Product | undefined>(id ? getProductById(id) : undefined)
+
+// 使用 useFetch 從 API 取得產品資料
+const { data: product } = await useFetch<Product>(`/api/products/${id}`)
 
 useHead({
   title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',

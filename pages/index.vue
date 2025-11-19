@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from '~/utils/productService'
+import type { Product } from '~/server/utils/productData'
 
 useHead({
   title: 'Anti-Shop | Curated Essentials',
@@ -9,7 +9,9 @@ useHead({
 })
 
 const cartStore = useCartStore()
-const products = ref<Product[]>(getProducts())
+
+// 使用 useFetch 從 API 取得產品資料
+const { data: products } = await useFetch<Product[]>('/api/products')
 
 function handleAddToCart(product: Product) {
   cartStore.addToCart(product)
