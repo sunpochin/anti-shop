@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import TheHeader from './components/TheHeader.vue'
-import TheFooter from './components/TheFooter.vue'
-import CartDrawer from './components/CartDrawer.vue'
+// Components are auto-imported
 </script>
 
 <template>
@@ -10,7 +7,7 @@ import CartDrawer from './components/CartDrawer.vue'
     <TheHeader />
     <CartDrawer />
     <main>
-      <RouterView />
+      <NuxtPage />
     </main>
     <TheFooter />
   </div>

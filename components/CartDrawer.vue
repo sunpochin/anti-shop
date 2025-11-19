@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useCartStore } from '../stores/cart'
-
+// Components and stores are auto-imported
 const cartStore = useCartStore()
 </script>
 

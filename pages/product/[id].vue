@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { getProductById } from '../services/productService'
-import { useCartStore } from '../stores/cart'
-import type { Product } from '../services/productService'
+import type { Product } from '~/utils/productService'
 
 const route = useRoute()
 const cartStore = useCartStore()
 const product = ref<Product | undefined>(undefined)
 
 onMounted(() => {
-  const id = route.params.id
-  product.value = getProductById(id)
+  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+  if (id) {
+    product.value = getProductById(id)
+  }
+})
+
+useHead({
+  title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',
+  meta: [
+    { name: 'description', content: () => product.value?.description || 'Product details' }
+  ]
 })
 
 function addToCart() {

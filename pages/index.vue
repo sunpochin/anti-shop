@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import ProductCard from '../components/ProductCard.vue'
-import { useCartStore } from '../stores/cart'
-import { getProducts } from '../services/productService'
-import type { Product } from '../services/productService'
+import type { Product } from '~/utils/productService'
+
+useHead({
+  title: 'Anti-Shop | Curated Essentials',
+  meta: [
+    { name: 'description', content: 'Discover our premium collection of lifestyle products.' }
+  ]
+})
 
 const cartStore = useCartStore()
 const products = ref<Product[]>([])
