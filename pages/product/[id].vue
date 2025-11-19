@@ -5,12 +5,14 @@ const route = useRoute()
 const cartStore = useCartStore()
 
 const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
-const product = ref<Product | undefined>(id ? getProductById(id) : undefined)
+
+// 從 API 獲取產品資料
+const { data: product } = await useFetch<Product>(`/api/products/${id}`)
 
 useHead({
-  title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',
+  title: () => product.value ? `${product.value.title} | Anti-Shop` : '找不到商品',
   meta: [
-    { name: 'description', content: () => product.value?.description || 'Product details' }
+    { name: 'description', content: () => product.value?.description || '商品詳情' }
   ]
 })
 
