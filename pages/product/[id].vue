@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Product } from '~/utils/productService'
+import type { Product } from '~/server/utils/productData'
 
 const route = useRoute()
 const cartStore = useCartStore()
 
 const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 
-// 從 API 獲取產品資料
+// 使用 useFetch 從 API 取得產品資料
 const { data: product } = await useFetch<Product>(`/api/products/${id}`)
 
 useHead({

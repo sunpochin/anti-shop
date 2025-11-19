@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 // Components are auto-imported
+
+// 載入購物車資料
+const cartStore = useCartStore()
+
+onMounted(() => {
+  cartStore.loadCart()
+})
 </script>
 
 <template>
