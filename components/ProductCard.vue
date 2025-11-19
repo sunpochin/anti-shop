@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import type { Product } from '../services/productService'
+import type { Product } from '~/utils/productService'
 
 const props = defineProps<{
   product: Product
@@ -17,13 +16,13 @@ function addToCart() {
 
 <template>
   <div class="product-card">
-    <RouterLink :to="{ name: 'product', params: { id: product.id } }" class="image-container">
+    <NuxtLink :to="{ name: 'product-id', params: { id: product.id } }" class="image-container">
       <img :src="product.image" :alt="product.title" loading="lazy" />
-    </RouterLink>
+    </NuxtLink>
     <div class="content">
-      <RouterLink :to="{ name: 'product', params: { id: product.id } }" class="title-link">
+      <NuxtLink :to="{ name: 'product-id', params: { id: product.id } }" class="title-link">
         <h3 class="title">{{ product.title }}</h3>
-      </RouterLink>
+      </NuxtLink>
       <p class="price">${{ product.price.toFixed(2) }}</p>
       <button @click="addToCart" class="btn btn-primary add-btn">
         Add to Cart

@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import { useCartStore } from '../stores/cart'
-
+// Components and stores are auto-imported
 const cartStore = useCartStore()
 </script>
 
 <template>
   <header class="header">
     <div class="container header-content">
-      <RouterLink to="/" class="logo">
+      <NuxtLink to="/" class="logo">
         Anti-Shop
-      </RouterLink>
+      </NuxtLink>
       
       <nav class="nav">
-        <RouterLink to="/" class="nav-link">Home</RouterLink>
+        <NuxtLink to="/" class="nav-link">Home</NuxtLink>
         <!-- Add more links if needed -->
       </nav>
 
