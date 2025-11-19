@@ -3,14 +3,9 @@ import type { Product } from '~/utils/productService'
 
 const route = useRoute()
 const cartStore = useCartStore()
-const product = ref<Product | undefined>(undefined)
 
-onMounted(() => {
-  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
-  if (id) {
-    product.value = getProductById(id)
-  }
-})
+const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+const product = ref<Product | undefined>(id ? getProductById(id) : undefined)
 
 useHead({
   title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',

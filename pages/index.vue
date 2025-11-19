@@ -9,11 +9,7 @@ useHead({
 })
 
 const cartStore = useCartStore()
-const products = ref<Product[]>([])
-
-onMounted(() => {
-  products.value = getProducts()
-})
+const products = ref<Product[]>(getProducts())
 
 function handleAddToCart(product: Product) {
   cartStore.addToCart(product)
