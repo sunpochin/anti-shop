@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { Product } from '~/server/utils/productData'
 
+// 使用認證中間件保護此頁面
+definePageMeta({
+  middleware: 'auth'
+})
+
 useHead({
   title: '結帳 | Anti-Shop',
   meta: [
@@ -59,19 +64,29 @@ function validateForm() {
 }
 
 // 送出訂單
-function submitOrder() {
+async function submitOrder() {
   if (!validateForm()) {
     return
   }
 
-  // 生成訂單編號
-  const orderId = 'ORD-' + Date.now()
-  
-  // 清空購物車
-  cartStore.clearCart()
-  
-  // 導向成功頁面
-  router.push(`/order-success?orderId=${orderId}`)
+  try {
+    const { order } = await $fetch<{ order: { id: number } }>('/api/orders', {
+      method: 'POST',
+      body: {
+        items: cartStore.items,
+        totalAmount: cartStore.totalPrice
+      }
+    })
+
+    // 清空購物車
+    cartStore.clearCart()
+    
+    // 導向成功頁面
+    router.push(`/order-success?orderId=${order.id}`)
+  } catch (error) {
+    console.error('Order failed', error)
+    alert('訂單提交失敗，請稍後再試')
+  }
 }
 
 // 如果購物車是空的，導回首頁
