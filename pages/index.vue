@@ -2,9 +2,9 @@
 import type { Product } from '~/server/utils/productData'
 
 useHead({
-  title: 'Anti-Shop | Curated Essentials',
+  title: 'Anti-Shop | 精選商品',
   meta: [
-    { name: 'description', content: 'Discover our premium collection of lifestyle products.' }
+    { name: 'description', content: '探索我們精選的優質生活產品系列。' }
   ]
 })
 
@@ -22,8 +22,8 @@ function handleAddToCart(product: Product) {
   <div class="home">
     <div class="hero">
       <div class="container">
-        <h1>Curated Essentials</h1>
-        <p>Discover our premium collection of lifestyle products.</p>
+        <h1>精選商品</h1>
+        <p>探索我們精選的優質生活產品系列。</p>
       </div>
     </div>
 

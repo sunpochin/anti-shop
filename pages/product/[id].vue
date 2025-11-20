@@ -10,9 +10,9 @@ const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 const { data: product } = await useFetch<Product>(`/api/products/${id}`)
 
 useHead({
-  title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',
+  title: () => product.value ? `${product.value.title} | Anti-Shop` : '找不到商品',
   meta: [
-    { name: 'description', content: () => product.value?.description || 'Product details' }
+    { name: 'description', content: () => product.value?.description || '商品詳情' }
   ]
 })
 
