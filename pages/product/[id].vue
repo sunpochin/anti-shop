@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from '~/server/utils/productData'
+import type { Product, Category } from '~/server/database/schema'
 
 const route = useRoute()
 const cartStore = useCartStore()
@@ -7,12 +7,12 @@ const cartStore = useCartStore()
 const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 
 // 使用 useFetch 從 API 取得產品資料
-const { data: product } = await useFetch<Product>(`/api/products/${id}`)
+const { data: product } = await useFetch<Product & { categories: Category[] }>(`/api/products/${id}`)
 
 useHead({
-  title: () => product.value ? `${product.value.title} | Anti-Shop` : 'Product Not Found',
+  title: () => product.value ? `${product.value.title} | Anti-Shop` : '找不到商品',
   meta: [
-    { name: 'description', content: () => product.value?.description || 'Product details' }
+    { name: 'description', content: () => product.value?.description || '商品詳情' }
   ]
 })
 
@@ -29,6 +29,16 @@ function addToCart() {
       <img :src="product.image" :alt="product.title" />
     </div>
     <div class="info">
+      <div class="categories" v-if="product.categories?.length">
+        <NuxtLink 
+          v-for="cat in product.categories" 
+          :key="cat.id"
+          :to="{ path: '/', query: { category: cat.slug } }"
+          class="category-tag"
+        >
+          {{ cat.name }}
+        </NuxtLink>
+      </div>
       <h1 class="title">{{ product.title }}</h1>
       <p class="price">${{ product.price.toFixed(2) }}</p>
       <p class="description">{{ product.description }}</p>
@@ -71,6 +81,27 @@ function addToCart() {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+}
+
+.categories {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.category-tag:hover {
+  background-color: var(--color-primary);
+  color: white;
 }
 
 .title {
