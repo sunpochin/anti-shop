@@ -1,5 +1,5 @@
 import { db } from '~/server/database/db'
-import { products } from '~/server/database/schema'
+import { products, categories, productCategories } from '~/server/database/schema'
 import { eq } from 'drizzle-orm'
 
 // GET /api/products/:id - 根據 ID 從資料庫取得單一產品
@@ -28,5 +28,18 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return product
+  // 查詢產品關聯的分類
+  const productCats = await db.select({
+    id: categories.id,
+    name: categories.name,
+    slug: categories.slug
+  })
+  .from(categories)
+  .innerJoin(productCategories, eq(categories.id, productCategories.categoryId))
+  .where(eq(productCategories.productId, product.id))
+
+  return {
+    ...product,
+    categories: productCats
+  }
 })

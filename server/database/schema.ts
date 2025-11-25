@@ -1,4 +1,4 @@
-import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, integer, text, real, primaryKey } from 'drizzle-orm/sqlite-core'
 
 // 產品資料表
 export const products = sqliteTable('products', {
@@ -39,6 +39,22 @@ export const orderItems = sqliteTable('order_items', {
   price: real('price').notNull()
 })
 
+// 產品分類資料表
+export const categories = sqliteTable('categories', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  slug: text('slug').notNull().unique(),
+  description: text('description')
+})
+
+// 產品與分類關聯表 (多對多)
+export const productCategories = sqliteTable('product_categories', {
+  productId: integer('product_id').references(() => products.id).notNull(),
+  categoryId: integer('category_id').references(() => categories.id).notNull()
+}, (t) => ({
+  pk: primaryKey({ columns: [t.productId, t.categoryId] })
+}))
+
 // 型別推導：從 schema 自動產生 TypeScript 型別
 export type Product = typeof products.$inferSelect
 export type NewProduct = typeof products.$inferInsert
@@ -51,3 +67,9 @@ export type NewOrder = typeof orders.$inferInsert
 
 export type OrderItem = typeof orderItems.$inferSelect
 export type NewOrderItem = typeof orderItems.$inferInsert
+
+export type Category = typeof categories.$inferSelect
+export type NewCategory = typeof categories.$inferInsert
+
+export type ProductCategory = typeof productCategories.$inferSelect
+export type NewProductCategory = typeof productCategories.$inferInsert
